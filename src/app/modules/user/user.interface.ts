@@ -19,5 +19,8 @@ export interface IUser{
     role: IRole
     phone?: string,
     picture?: string,
+    about?: string,
+    interests:string[],
+    location: string,
     isBlocked: boolean,
 }

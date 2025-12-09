@@ -19,6 +19,9 @@ const userSchema = new Schema<IUser>(
     auths: [authsProviderSchema],
     phone: { type: String },
     picture: { type: String },
+    about: {type: String},
+    interests: {type: [String], required: true},
+    location: {type: String, required:true},
     isBlocked: { type: Boolean, default: false },
     role: {
       type: String,
