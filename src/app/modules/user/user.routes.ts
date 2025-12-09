@@ -5,7 +5,8 @@ import { createZodSchemaUser } from "./user.validates";
 
 const router = Router()
 
-
+router.get("/get-all-users", userControllers.getAllUser)
+router.get("/:id", userControllers.getUserById)
 router.post("/create-user", validationRequest(createZodSchemaUser), userControllers.createUser)
 
 

@@ -7,7 +7,7 @@ import httpStatusCode from "http-status-codes"
 const createUser = catchAsync(async(req: Request, res: Response)=>{
     const payload = req.body 
 
-    payload.interests = payload?.interests.split(",")
+    payload.interests = await payload?.interests.split(",")
 
     const result = await userServices.createUser(payload)
 
@@ -21,6 +21,37 @@ const createUser = catchAsync(async(req: Request, res: Response)=>{
 })
 
 
+const getAllUser = catchAsync(async(req: Request, res: Response)=>{
+    
+    const result = await userServices.getAllUser()
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatusCode.OK,
+        message: "All user's info retrieve successfully",
+        data: result
+    })
+
+})
+const getUserById = catchAsync(async(req: Request, res: Response)=>{
+    const id = req.params.id
+    const result = await userServices.getUserById(id)
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatusCode.OK,
+        message: "User info retrieve successfully",
+        data: result
+    })
+
+})
+
+
+
+
+
 export const userControllers = {
-    createUser
+    createUser,
+    getAllUser,
+    getUserById
 }
