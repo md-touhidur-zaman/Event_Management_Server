@@ -4,10 +4,10 @@ import { userServices } from "./user.services";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatusCode from "http-status-codes"
 
-
-
 const createUser = catchAsync(async(req: Request, res: Response)=>{
     const payload = req.body 
+
+    payload.interests = payload?.interests.split(",")
 
     const result = await userServices.createUser(payload)
 

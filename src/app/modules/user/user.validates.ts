@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const createZodSchema = z.object({
+export const createZodSchemaUser = z.object({
   name: z
     .string({ message: "Name must be string" })
     .min(3, { message: "The name must be 3 character" })
@@ -31,7 +31,7 @@ export const createZodSchema = z.object({
 
   interests: z.string(),
   location: z.string(),
-  role: z.string({ message: "role is required" }),
+  role: z.string({ message: "role is required" }).optional(),
   picture: z.string().optional(),
   isBlocked: z.boolean().optional(),
 });
