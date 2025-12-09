@@ -1,0 +1,43 @@
+import AppError from "../../errorHelpers/appError";
+import { IUser } from "./user.interface";
+import { User } from "./user.model";
+import httpStatusCode from "http-status-codes" 
+import bcryptjs from "bcryptjs"
+import { envVars } from "../../config/env";
+
+const createUser = async(payload: Partial<IUser>) =>{
+    const {email, password} = payload
+
+    const isUserExist = await User.findOne({email})
+
+    if(isUserExist){
+        throw new AppError(httpStatusCode.BAD_GATEWAY, "You Already registered.")
+    }
+
+    if(password){
+        const hashedPassword = await bcryptjs.hash(password, Number(envVars.BCRYPT_SALT_COUNT))
+        payload.password = hashedPassword
+    }
+
+    const userPayload: Partial<IUser> = {
+        ...payload,
+        auths: [
+            {
+                providerId: payload.email as string,
+                providerName: "Credentials"
+            }
+        ]
+    }
+
+    const createUserInfo = await User.create(userPayload)
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {password: pass, ...rest} = createUserInfo.toObject()
+
+    return rest
+    
+}
+
+export const userServices = {
+    createUser
+}
