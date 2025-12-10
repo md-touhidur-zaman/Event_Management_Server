@@ -1,7 +1,9 @@
+/* eslint-disable no-console */
 import { Server } from "http";
 import { app } from "./app";
 import { envVars } from "./app/config/env";
 import mongoose from "mongoose";
+import { seedAdmin } from "./app/utils/seedAdmin";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let server: Server;
@@ -18,9 +20,9 @@ const startServer = async () => {
   }
 };
 
-// (async()=>{
-//     await startServer();
-//     await seedAdmin();
-// })()
+(async()=>{
+    await startServer();
+    await seedAdmin();
+})()
 
 startServer();
