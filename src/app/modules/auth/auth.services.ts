@@ -1,33 +1,45 @@
-import  bcryptjs  from 'bcryptjs';
-import  httpStatusCode  from 'http-status-codes';
+import bcryptjs from "bcryptjs";
+import httpStatusCode from "http-status-codes";
 import AppError from "../../errorHelpers/appError";
 import { IUser } from "../user/user.interface";
 import { User } from "../user/user.model";
+import { createUserTokens } from "../../utils/userToken";
 
-const credentialsLogin = async(payload: Partial<IUser>) =>{
-    const {email, password} = payload 
+const credentialsLogin = async (payload: Partial<IUser>) => {
+  const { email, password } = payload;
 
-    const isUserExist = await User.findOne({email})
+  const isUserExist = await User.findOne({ email });
 
-    if(!isUserExist){
-        throw new AppError(httpStatusCode.BAD_REQUEST, "Your email address is not valid")
-    }
+  if (!isUserExist) {
+    throw new AppError(
+      httpStatusCode.BAD_REQUEST,
+      "Your email address is not valid"
+    );
+  }
 
-    const isMatchedPassword = await bcryptjs.compare(password as string, isUserExist.password as string)
+  const isMatchedPassword = await bcryptjs.compare(
+    password as string,
+    isUserExist.password as string
+  );
 
-    if(!isMatchedPassword){
-        throw new AppError(httpStatusCode.NOT_FOUND, "The password does not matched")
-    }
+  if (!isMatchedPassword) {
+    throw new AppError(
+      httpStatusCode.NOT_FOUND,
+      "The password does not matched"
+    );
+  }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {password: pass, ...rest} = isUserExist.toObject()
+  const userTokens = await createUserTokens(isUserExist);
 
-    return rest
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password: pass, ...rest } = isUserExist.toObject();
 
-
-}
-
+  return {
+    userTokens,
+    user: rest,
+  }
+};
 
 export const authServices = {
-    credentialsLogin
-}
+  credentialsLogin,
+};
