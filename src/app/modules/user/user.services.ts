@@ -38,7 +38,6 @@ const getAllUser = async() =>{
     return allUsersInfo
 }
 
-
 const getUserById = async(id: string) =>{
     const userInfo = await User.findById(id)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
