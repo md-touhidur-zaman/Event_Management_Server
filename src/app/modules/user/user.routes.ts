@@ -8,7 +8,7 @@ const router = Router()
 router.get("/get-all-users", userControllers.getAllUser)
 router.get("/:id", userControllers.getUserById)
 router.post("/create-user", validationRequest(createZodSchemaUser), userControllers.createUser)
-
+router.post("/update-user", userControllers.updateUser)
 
 
 export const userRoutes = router

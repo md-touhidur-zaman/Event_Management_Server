@@ -47,11 +47,36 @@ const getUserById = catchAsync(async(req: Request, res: Response)=>{
 })
 
 
+const updateUser = catchAsync(async(req:Request, res:Response)=>{
+  const userId = req.params.id
+  
+
+  let updatedDoc = req.body
+
+  const {password, ...rest} = updatedDoc
+
+  if(password === ""){
+    updatedDoc = rest
+  }
+
+  const result = await userServices.updateUser(userId, updatedDoc)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatusCode.OK,
+    message: "Successfully user info updated.",
+    data: result
+  })
+
+})
+
+
 
 
 
 export const userControllers = {
     createUser,
     getAllUser,
-    getUserById
+    getUserById,
+    updateUser
 }
