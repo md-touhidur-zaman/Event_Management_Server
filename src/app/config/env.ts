@@ -15,12 +15,24 @@ interface IEnvConfig {
   ADMIN_PHONE: string;
   ADMIN_NAME: string;
   ADMIN_LOCATION: string;
-
   CLOUDINARY: {
     CLOUDINARY_NAME : string;
     CLOUDINARY_API_KEY : string;
     CLOUDINARY_API_SECRET : string;
-  }
+  };
+  SSL: {
+    SSL_COMMERZ_ID: string;
+    SSL_COMMERZ_PASS: string;
+    SSL_COMMERZ_PAYMENT_API: string;
+    SSL_COMMERZ_VALIDATION_API: string;
+    SSL_COMMERZ_VALIDATE_URL: string;
+    SSL_COMMERZ_FRONTEND_SUCCESS_URL: string;
+    SSL_COMMERZ_FRONTEND_CANCEL_URL: string;
+    SSL_COMMERZ_FRONTEND_FAILED_URL: string;
+    SSL_COMMERZ_BACKEND_SUCCESS_URL: string;
+    SSL_COMMERZ_BACKEND_CANCEL_URL: string;
+    SSL_COMMERZ_BACKEND_FAILED_URL: string;
+  };
 }
 
 const loadEnvVars = ():IEnvConfig =>{
@@ -40,6 +52,17 @@ const loadEnvVars = ():IEnvConfig =>{
       "CLOUDINARY_NAME",
       "CLOUDINARY_API_KEY",
       "CLOUDINARY_API_SECRET",
+      "SSL_COMMERZ_ID",
+      "SSL_COMMERZ_PASS",
+      "SSL_COMMERZ_PAYMENT_API",
+      "SSL_COMMERZ_VALIDATION_API",
+      "SSL_COMMERZ_VALIDATE_URL",
+      "SSL_COMMERZ_FRONTEND_SUCCESS_URL",
+      "SSL_COMMERZ_FRONTEND_CANCEL_URL",
+      "SSL_COMMERZ_FRONTEND_FAILED_URL",
+      "SSL_COMMERZ_BACKEND_SUCCESS_URL",
+      "SSL_COMMERZ_BACKEND_CANCEL_URL",
+      "SSL_COMMERZ_BACKEND_FAILED_URL",
     ];
 
     requiredEnvVar.forEach(key=>{
@@ -65,7 +88,30 @@ const loadEnvVars = ():IEnvConfig =>{
         CLOUDINARY_NAME: process.env.CLOUDINARY_NAME as string,
         CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
         CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
-      }
+      },
+      SSL: {
+        SSL_COMMERZ_ID: process.env.SSL_COMMERZ_ID as string,
+        SSL_COMMERZ_PASS: process.env.SSL_COMMERZ_PASS as string,
+        SSL_COMMERZ_PAYMENT_API: process.env.SSL_COMMERZ_PAYMENT_API as string,
+        SSL_COMMERZ_VALIDATION_API: process.env
+          .SSL_COMMERZ_VALIDATION_API as string,
+        SSL_COMMERZ_VALIDATE_URL: process.env
+          .SSL_COMMERZ_VALIDATE_URL as string,
+
+        SSL_COMMERZ_FRONTEND_SUCCESS_URL: process.env
+          .SSL_COMMERZ_FRONTEND_SUCCESS_URL as string,
+        SSL_COMMERZ_FRONTEND_CANCEL_URL: process.env
+          .SSL_COMMERZ_FRONTEND_CANCEL_URL as string,
+        SSL_COMMERZ_FRONTEND_FAILED_URL: process.env
+          .SSL_COMMERZ_FRONTEND_FAILED_URL as string,
+        SSL_COMMERZ_BACKEND_SUCCESS_URL: process.env
+          .SSL_COMMERZ_BACKEND_SUCCESS_URL as string,
+        SSL_COMMERZ_BACKEND_CANCEL_URL: process.env
+          .SSL_COMMERZ_BACKEND_CANCEL_URL as string,
+        SSL_COMMERZ_BACKEND_FAILED_URL: process.env
+          .SSL_COMMERZ_BACKEND_FAILED_URL as string,
+      },
+      
 
     };
 }
