@@ -15,7 +15,6 @@ const storage = new CloudinaryStorage({
       const updatedFileName =
         Math.random().toString(36).substring(2) +
         "-" +
-        "-" +
         filename 
 
       return updatedFileName;

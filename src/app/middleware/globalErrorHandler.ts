@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../errorHelpers/appError";
+import { deleteImageFromCLoudinary } from "../config/cloudinary.config";
 
-export const globalErrorHandler = (
+export const globalErrorHandler = async(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err: any,
   req: Request,
@@ -11,6 +12,12 @@ export const globalErrorHandler = (
 ) => {
   let status_code = 500;
   let message = "Something went wrong....";
+
+
+  if (req.file) {
+        await deleteImageFromCLoudinary(req.file.path)
+    }
+
 
 
   if (err instanceof AppError) {
