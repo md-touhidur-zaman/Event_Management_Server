@@ -13,7 +13,7 @@ const successPayment = async (query: Record<string, string>) => {
       { new: true, runValidators: true, session }
     );
 
-    const updatedBookingInfo = await Bookings.findOneAndUpdate(
+     await Bookings.findOneAndUpdate(
       { payment: updatedPaymentInfo._id },
       { status: BOOKING_STATUS.COMPLETE },
       { new: true, runValidators: true, session }
@@ -22,7 +22,15 @@ const successPayment = async (query: Record<string, string>) => {
     await session.commitTransaction()
     session.endSession()
 
-    return updatedBookingInfo
+    return  {
+        success: true,
+        message: "Payment successfully completed.",
+        data: {
+          transitionId: updatedPaymentInfo?.transactionId,
+          payment_status: updatedPaymentInfo?.payment_status,
+          amount: updatedPaymentInfo?.amount
+        }
+    }
   } catch (error) {
     await session.commitTransaction()
     session.endSession()
