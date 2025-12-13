@@ -13,9 +13,9 @@ const initPayment = async (payload: ISSLCommerz) => {
       total_amount: payload.amount,
       currency: "BDT",
       tran_id: payload.transactionId,
-      success_url: `${envVars.SSL.SSL_COMMERZ_BACKEND_SUCCESS_URL}?transitionId=${payload.transactionId}&amount=${payload.amount}&status=success`,
-      fail_url: `${envVars.SSL.SSL_COMMERZ_BACKEND_FAILED_URL}?transitionId=${payload.transactionId}&amount=${payload.amount}&status=fail`,
-      cancel_url: `${envVars.SSL.SSL_COMMERZ_BACKEND_CANCEL_URL}?transitionId=${payload.transactionId}&amount=${payload.amount}&status=cancel`,
+      success_url: `${envVars.SSL.SSL_COMMERZ_BACKEND_SUCCESS_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=success`,
+      fail_url: `${envVars.SSL.SSL_COMMERZ_BACKEND_FAILED_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=fail`,
+      cancel_url: `${envVars.SSL.SSL_COMMERZ_BACKEND_CANCEL_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=cancel`,
       ipn_url:`${envVars.SSL.SSL_COMMERZ_VALIDATE_URL}`,
       cus_name: payload.name,
       cus_email: payload.email,
@@ -61,7 +61,7 @@ const validatePayment = async (payload: any) => {
   });
 
   await Payment.findOneAndUpdate(
-    { transitionId: payload.tran_id},
+    { transactionId: payload.tran_id},
     { paymentGateWayData: response.data},
     { runValidators: true}
   );

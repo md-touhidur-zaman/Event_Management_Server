@@ -48,7 +48,7 @@ const getUserById = async(id: string) =>{
 
 const updateUser = async (id: string, updatedDoc: Partial<IUser>) => {
 
-  if (updatedDoc.password) {
+  if (updatedDoc?.password) {
     const hashedPassword = await bcryptjs.hash(updatedDoc.password, envVars.BCRYPT_SALT_COUNT)
     updatedDoc.password = hashedPassword
   }
@@ -57,7 +57,10 @@ const updateUser = async (id: string, updatedDoc: Partial<IUser>) => {
     new: true
   })
 
-  return updatedUserInfo
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {password, ...rest} = updatedUserInfo.toObject()
+
+  return rest
 
 
 }

@@ -31,6 +31,8 @@ const createBookings = async (payload: Partial<IBooking>) => {
       );
     }
 
+
+
     const totalAmount = eventInfo.joining_fee * payload.guestCount;
 
     const createBookingInfo = await Bookings.create([payload], { session });
@@ -70,7 +72,7 @@ const createBookings = async (payload: Partial<IBooking>) => {
         phoneNumber: userPhone,
         address: userLocation,
         transactionId,
-        amount: totalAmount
+        amount: totalAmount,
     }
     
     const sslPayment = await sslCommerzServices.initPayment(sslCommerzPayload)
@@ -90,6 +92,18 @@ const createBookings = async (payload: Partial<IBooking>) => {
   }
 };
 
+const getMyBookings = async(userId) =>{
+  const result = await Bookings.find({user: userId})
+  .populate("user", "name email phone")
+  .populate("event")
+  .populate("payment")
+
+  return result 
+}
+
+
+
 export const BookingServices = {
-    createBookings
+    createBookings,
+    getMyBookings
 }
