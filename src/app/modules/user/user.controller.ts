@@ -7,7 +7,7 @@ import httpStatusCode from "http-status-codes";
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
-  payload.interests = await payload?.interests.split(",");
+  // payload.interests = await payload?.interests.split(",");
 
   const result = await userServices.createUser(payload);
 

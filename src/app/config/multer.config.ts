@@ -6,15 +6,16 @@ const storage = new CloudinaryStorage({
   cloudinary: CloudinaryUpload,
   params: {
     public_id: (req, file) => {
+   
       const filename = file.originalname
         .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/\./g, "-");
+        .replace(/\s+/g, "_")
+        .replace(/\./g, "_");
 
-    //   const extension = file.originalname.split(".").pop();
+      // const extension = file.originalname.split(".").pop();
       const updatedFileName =
         Math.random().toString(36).substring(2) +
-        "-" +
+        "_" +
         filename 
 
       return updatedFileName;

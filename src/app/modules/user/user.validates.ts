@@ -29,7 +29,7 @@ export const createZodSchemaUser = z.object({
     })
     .optional(),
 
-  interests: z.string(),
+  interests: z.array(z.string()),
   location: z.string(),
   role: z.string({ message: "role is required" }).optional(),
   picture: z.string().optional(),

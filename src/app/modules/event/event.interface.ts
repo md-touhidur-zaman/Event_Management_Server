@@ -9,12 +9,13 @@ export enum IEventStatus{
 
 export interface IEvent{
     host:Types.ObjectId,
-    event_type: string,
+    title: string,
+    category: string,
+    organizer_name: string,
     date: string,
     time: string,
     location: string,
-    min_participants: number,
-    max_participants: number,
+    total_participants: number,
     description: string,
     image: string,
     joining_fee: number,

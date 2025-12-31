@@ -5,6 +5,7 @@ import { generateToken } from "./jwt";
 export const createUserTokens = async (userInfo: Partial<IUser>) => {
   const jwtPayload = {
     userId: userInfo._id,
+    name: userInfo.name,
     email: userInfo.email,
     role: userInfo.role,
   };
