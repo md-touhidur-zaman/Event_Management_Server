@@ -42,7 +42,21 @@ const updateHostRole = catchAsync(async(req: Request, res:Response) =>{
     })
 })
 
+const getAllPublishedEvents = catchAsync(async(req:Request, res:Response)=>{
+    const decodedToken = req.user as JwtPayload
+    const userId = decodedToken.userId
+    const result = await hostServices.getAllPublishedEvents(userId)
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatusCode.OK,
+        message: "Your All Published Events Retrieve Successfully",
+        data: result 
+    })
+})
+
 export  const HostControllers = {
     requestBecomeHost,
-    updateHostRole
+    updateHostRole,
+    getAllPublishedEvents
 }

@@ -66,6 +66,7 @@ const getAllEvent = async () => {
   return getAllEventInfos;
 };
 
+
 const updateEventInfo = async (eventId: string, payload: Partial<IEvent>) => {
   const updatedEventInfo = await Event.findByIdAndUpdate(eventId, payload, {
     new: true,

@@ -1,0 +1,75 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.eventServices = void 0;
+const http_status_codes_1 = __importDefault(require("http-status-codes"));
+const appError_1 = __importDefault(require("../../errorHelpers/appError"));
+const host_model_1 = require("../host/host.model");
+const event_model_1 = require("./event.model");
+const createEvent = async (user, payload) => {
+    const session = await event_model_1.Event.startSession();
+    session.startTransaction();
+    try {
+        const hostInfo = await host_model_1.Host.findOne({ user });
+        if (!hostInfo) {
+            throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "You are not a host");
+        }
+        const eventPayload = {
+            ...payload,
+            host: hostInfo._id,
+        };
+        const createEventInfo = await event_model_1.Event.create([eventPayload], { session });
+        await host_model_1.Host.findByIdAndUpdate(hostInfo._id, {
+            events: [...hostInfo.events, createEventInfo[0]._id],
+        }, { new: true, session });
+        await session.commitTransaction();
+        session.endSession();
+        return createEventInfo;
+    }
+    catch (error) {
+        await session.commitTransaction();
+        session.endSession();
+        throw error;
+    }
+};
+const getEventById = async (eventId) => {
+    const eventInfo = await event_model_1.Event.findById(eventId).populate({
+        path: "host",
+        select: "user approval_Status",
+        populate: {
+            path: "user",
+            select: "name email phone",
+        },
+    });
+    return eventInfo;
+};
+const getAllEvent = async () => {
+    const getAllEventInfos = await event_model_1.Event.find().populate({
+        path: "host",
+        select: "user approval_Status",
+        populate: {
+            path: "user",
+            select: "name email phone",
+        },
+    });
+    return getAllEventInfos;
+};
+const updateEventInfo = async (eventId, payload) => {
+    const updatedEventInfo = await event_model_1.Event.findByIdAndUpdate(eventId, payload, {
+        new: true,
+    });
+    return updatedEventInfo;
+};
+const deleteEventInfo = async (eventId) => {
+    const deletedEventInfo = await event_model_1.Event.findByIdAndDelete(eventId);
+    return deletedEventInfo;
+};
+exports.eventServices = {
+    createEvent,
+    getEventById,
+    getAllEvent,
+    updateEventInfo,
+    deleteEventInfo
+};

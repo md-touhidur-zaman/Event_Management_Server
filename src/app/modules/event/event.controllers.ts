@@ -33,6 +33,7 @@ const getEventById = catchAsync(async(req:Request, res:Response)=>{
         data: result
     })
 })
+
 const getAllEvent = catchAsync(async(req:Request, res:Response)=>{
    
     const result = await eventServices.getAllEvent()

@@ -19,9 +19,15 @@ const updateHostRole = async(hostId: string, approval_Status: string) =>{
     return updatedHostInfo
 }
 
+const getAllPublishedEvents = async(userId:string) =>{
+    const allPublishedEvents = await Host.findOne({user: userId}).populate("events")
+    return allPublishedEvents
+}
+
 
 
 export const hostServices = {
     requestBecomeHost,
-    updateHostRole
+    updateHostRole,
+    getAllPublishedEvents
 }
