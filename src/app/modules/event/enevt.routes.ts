@@ -4,7 +4,7 @@ import { checkAuth } from "../../middleware/checkAuth";
 import { IRole } from "../user/user.interface";
 import { MulterUpload } from "../../config/multer.config";
 import { validationRequest } from "../../middleware/validationRequest";
-import { eventZodSchema } from "./event.validation";
+import { eventZodSchema, updateEventZodSchema } from "./event.validation";
 
 const router = Router();
 
@@ -26,11 +26,14 @@ router.post(
 );
 
 router.patch(
-  "/update",
+  "/update/:id",
   checkAuth(IRole.HOST),
+  MulterUpload.single("file"),
+  validationRequest(updateEventZodSchema),
   eventControllers.updateEventInfo
 );
-router.patch(
+
+router.delete(
   "/delete",
   checkAuth(IRole.HOST),
   eventControllers.deleteEventInfo

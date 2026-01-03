@@ -56,11 +56,14 @@ const getAllEvent = async () => {
     });
     return getAllEventInfos;
 };
-const updateEventInfo = async (eventId, payload) => {
-    const updatedEventInfo = await event_model_1.Event.findByIdAndUpdate(eventId, payload, {
-        new: true,
-    });
-    return updatedEventInfo;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateEventInfo = async (eventId, payload, file) => {
+    console.log(payload);
+    console.log(file);
+    // const updatedEventInfo = await Event.findByIdAndUpdate(eventId, payload, {
+    //   new: true,
+    // });
+    // return updatedEventInfo;
 };
 const deleteEventInfo = async (eventId) => {
     const deletedEventInfo = await event_model_1.Event.findByIdAndDelete(eventId);

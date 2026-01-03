@@ -13,13 +13,13 @@ const createEvent = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const userId = decodeToken.userId;
     const result = await event_services_1.eventServices.createEvent(userId, {
         ...req.body,
-        image: req.file?.path
+        image: req.file?.path,
     });
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.CREATED,
         message: "The event is successfully created",
-        data: result
+        data: result,
     });
 });
 const getEventById = (0, catchAsync_1.catchAsync)(async (req, res) => {
@@ -29,7 +29,7 @@ const getEventById = (0, catchAsync_1.catchAsync)(async (req, res) => {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "The event info retrieve successfully",
-        data: result
+        data: result,
     });
 });
 const getAllEvent = (0, catchAsync_1.catchAsync)(async (req, res) => {
@@ -38,17 +38,17 @@ const getAllEvent = (0, catchAsync_1.catchAsync)(async (req, res) => {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "All event info retrieve successfully",
-        data: result
+        data: result,
     });
 });
 const updateEventInfo = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const eventId = req.params.id;
-    const result = await event_services_1.eventServices.updateEventInfo(eventId, req.body);
+    const result = await event_services_1.eventServices.updateEventInfo(eventId, req.body, req.file);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Event info Updated successfully",
-        data: result
+        data: result,
     });
 });
 const deleteEventInfo = (0, catchAsync_1.catchAsync)(async (req, res) => {
@@ -58,7 +58,7 @@ const deleteEventInfo = (0, catchAsync_1.catchAsync)(async (req, res) => {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Event info deleted successfully",
-        data: result
+        data: result,
     });
 });
 exports.eventControllers = {
@@ -66,5 +66,5 @@ exports.eventControllers = {
     getEventById,
     getAllEvent,
     updateEventInfo,
-    deleteEventInfo
+    deleteEventInfo,
 };

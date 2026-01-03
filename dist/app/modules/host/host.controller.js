@@ -35,7 +35,19 @@ const updateHostRole = (0, catchAsync_1.catchAsync)(async (req, res) => {
         data: result
     });
 });
+const getAllPublishedEvents = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const decodedToken = req.user;
+    const userId = decodedToken.userId;
+    const result = await host_services_1.hostServices.getAllPublishedEvents(userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Your All Published Events Retrieve Successfully",
+        data: result
+    });
+});
 exports.HostControllers = {
     requestBecomeHost,
-    updateHostRole
+    updateHostRole,
+    getAllPublishedEvents
 };

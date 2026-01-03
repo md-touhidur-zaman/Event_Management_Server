@@ -3,6 +3,7 @@ import AppError from "../../errorHelpers/appError";
 import { Host } from "../host/host.model";
 import { IEvent } from "./event.interface";
 import { Event } from "./event.model";
+import { deleteImageFromCLoudinary } from "../../config/cloudinary.config";
 
 const createEvent = async (user: string, payload: Partial<IEvent>) => {
   const session = await Event.startSession();
@@ -67,17 +68,29 @@ const getAllEvent = async () => {
 };
 
 
-const updateEventInfo = async (eventId: string, payload: Partial<IEvent>) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateEventInfo = async (eventId: string, payload: Partial<IEvent>, file: any) => {
+  
+  const eventInfo = await Event.findById(eventId) as IEvent
+
+  if(!eventInfo){
+    throw new AppError(httpStatusCode.BAD_REQUEST, "The event info not found")
+  }
+
+  if(file){
+    await deleteImageFromCLoudinary(eventInfo?.image)
+    payload.image = file.path 
+  }
+
   const updatedEventInfo = await Event.findByIdAndUpdate(eventId, payload, {
     new: true,
   });
 
-  return updatedEventInfo;
+  return updatedEventInfo
 };
 
 const deleteEventInfo = async (eventId:string) => {
   const deletedEventInfo = await Event.findByIdAndDelete(eventId);
-
   return deletedEventInfo;
 };
 

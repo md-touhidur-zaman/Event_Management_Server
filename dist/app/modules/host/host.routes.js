@@ -6,6 +6,7 @@ const host_controller_1 = require("./host.controller");
 const checkAuth_1 = require("../../middleware/checkAuth");
 const user_interface_1 = require("../user/user.interface");
 const router = (0, express_1.Router)();
+router.get("/published-event", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.HOST), host_controller_1.HostControllers.getAllPublishedEvents);
 router.post("/become-host", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.USER), host_controller_1.HostControllers.requestBecomeHost);
 router.post("/update-approval/:id", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.ADMIN), host_controller_1.HostControllers.updateHostRole);
 exports.hostRoutes = router;

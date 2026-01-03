@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CloudinaryUpload = exports.deleteImageFromCLoudinary = void 0;
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const cloudinary_1 = require("cloudinary");
 const env_1 = require("./env");
