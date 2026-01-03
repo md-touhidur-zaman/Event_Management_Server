@@ -77,6 +77,10 @@ const updateEventInfo = async (eventId: string, payload: Partial<IEvent>, file: 
     throw new AppError(httpStatusCode.BAD_REQUEST, "The event info not found")
   }
 
+  if(eventInfo.event_status === "COMPLETED"){
+    throw new AppError(httpStatusCode.BAD_REQUEST, "You can't update this event. Your event is completed")
+  }
+
   if(file){
     await deleteImageFromCLoudinary(eventInfo?.image)
     payload.image = file.path 
@@ -90,6 +94,13 @@ const updateEventInfo = async (eventId: string, payload: Partial<IEvent>, file: 
 };
 
 const deleteEventInfo = async (eventId:string) => {
+  const eventInfo = await Event.findById(eventId) as IEvent
+
+  if(!eventInfo){
+    throw new AppError(httpStatusCode.BAD_REQUEST, "The event info doesn't exist")
+  }
+  await deleteImageFromCLoudinary(eventInfo.image)
+  
   const deletedEventInfo = await Event.findByIdAndDelete(eventId);
   return deletedEventInfo;
 };

@@ -34,7 +34,7 @@ router.patch(
 );
 
 router.delete(
-  "/delete",
+  "/delete/:id",
   checkAuth(IRole.HOST),
   eventControllers.deleteEventInfo
 );

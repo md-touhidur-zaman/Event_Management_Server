@@ -55,9 +55,12 @@ const updateEventInfo = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const deleteEventInfo = catchAsync(async (req: Request, res: Response) => {
   const eventId = req.params.id;
+
   const result = await eventServices.deleteEventInfo(eventId);
+
   sendResponse(res, {
     success: true,
     statusCode: httpStatusCode.OK,

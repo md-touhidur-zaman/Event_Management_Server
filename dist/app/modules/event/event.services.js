@@ -8,6 +8,7 @@ const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const appError_1 = __importDefault(require("../../errorHelpers/appError"));
 const host_model_1 = require("../host/host.model");
 const event_model_1 = require("./event.model");
+const cloudinary_config_1 = require("../../config/cloudinary.config");
 const createEvent = async (user, payload) => {
     const session = await event_model_1.Event.startSession();
     session.startTransaction();
@@ -58,12 +59,18 @@ const getAllEvent = async () => {
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const updateEventInfo = async (eventId, payload, file) => {
-    console.log(payload);
-    console.log(file);
-    // const updatedEventInfo = await Event.findByIdAndUpdate(eventId, payload, {
-    //   new: true,
-    // });
-    // return updatedEventInfo;
+    const eventInfo = await event_model_1.Event.findById(eventId);
+    if (!eventInfo) {
+        throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "The event info not found");
+    }
+    if (file) {
+        await (0, cloudinary_config_1.deleteImageFromCLoudinary)(eventInfo?.image);
+        payload.image = file.path;
+    }
+    const updatedEventInfo = await event_model_1.Event.findByIdAndUpdate(eventId, payload, {
+        new: true,
+    });
+    return updatedEventInfo;
 };
 const deleteEventInfo = async (eventId) => {
     const deletedEventInfo = await event_model_1.Event.findByIdAndDelete(eventId);
