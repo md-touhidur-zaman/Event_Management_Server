@@ -29,8 +29,9 @@ const getAllUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
     });
 });
 const getUserById = (0, catchAsync_1.catchAsync)(async (req, res) => {
-    const id = req.params.id;
-    const result = await user_services_1.userServices.getUserById(id);
+    const decodedToken = req.user;
+    const userId = decodedToken.userId;
+    const result = await user_services_1.userServices.getUserById(userId);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,

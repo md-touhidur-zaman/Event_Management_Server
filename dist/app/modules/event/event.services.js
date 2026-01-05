@@ -63,6 +63,9 @@ const updateEventInfo = async (eventId, payload, file) => {
     if (!eventInfo) {
         throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "The event info not found");
     }
+    if (eventInfo.event_status === "COMPLETED") {
+        throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "You can't update this event. Your event is completed");
+    }
     if (file) {
         await (0, cloudinary_config_1.deleteImageFromCLoudinary)(eventInfo?.image);
         payload.image = file.path;
@@ -73,6 +76,11 @@ const updateEventInfo = async (eventId, payload, file) => {
     return updatedEventInfo;
 };
 const deleteEventInfo = async (eventId) => {
+    const eventInfo = await event_model_1.Event.findById(eventId);
+    if (!eventInfo) {
+        throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "The event info doesn't exist");
+    }
+    await (0, cloudinary_config_1.deleteImageFromCLoudinary)(eventInfo.image);
     const deletedEventInfo = await event_model_1.Event.findByIdAndDelete(eventId);
     return deletedEventInfo;
 };

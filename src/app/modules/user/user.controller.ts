@@ -3,6 +3,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { userServices } from "./user.services";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatusCode from "http-status-codes";
+import { JwtPayload } from "jsonwebtoken";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
@@ -30,8 +31,9 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getUserById = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const result = await userServices.getUserById(id);
+  const decodedToken = req.user as JwtPayload
+  const userId = decodedToken.userId
+  const result = await userServices.getUserById(userId);
 
   sendResponse(res, {
     success: true,
@@ -44,14 +46,7 @@ const getUserById = catchAsync(async (req: Request, res: Response) => {
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const decodedToken = req.user;
   const userId = decodedToken.userId;
-
   const updatedDoc = req.body;
-
-//   const { password, ...rest } = updatedDoc;
-
-//   if (password === "") {
-//     updatedDoc = rest;
-//   }
 
   const result = await userServices.updateUser(userId, updatedDoc);
 

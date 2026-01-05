@@ -12,7 +12,7 @@ const globalErrorHandler_1 = require("./app/middleware/globalErrorHandler");
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cors_1.default)({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://event-management-nine-brown.vercel.app"],
     credentials: true
 }));
 exports.app.use((0, cookie_parser_1.default)());

@@ -35,3 +35,29 @@ export const createZodSchemaUser = z.object({
   picture: z.string().optional(),
   isBlocked: z.boolean().optional(),
 });
+
+
+
+export const UpdateUserZodSchemaUser = z.object({
+  name: z
+    .string({ message: "Name must be string" })
+    .min(3, { message: "The name must be 3 character" })
+    .max(30, { message: "The name length must be less than 30" }).optional(),
+  email: z.string().email({ error: "Please provide a valid email" }).optional(),
+  phone: z
+    .string()
+    .regex(/^(?:\+?88)?01[3-9]\d{8}$/, {
+      message:
+        "Phone number must be Bangladeshi format..., for example:- +8801700000000",
+    })
+    .optional(),
+  about: z
+    .string()
+    .max(150, {
+      message: "The about section will be less than or equal 150 words",
+    })
+    .optional(),
+  location: z.string().optional(),
+  picture: z.string().optional(),
+ 
+});

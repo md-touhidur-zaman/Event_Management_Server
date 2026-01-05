@@ -13,5 +13,5 @@ router.get("/", event_controllers_1.eventControllers.getAllEvent);
 router.get("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.USER, user_interface_1.IRole.HOST, user_interface_1.IRole.ADMIN), event_controllers_1.eventControllers.getEventById);
 router.post("/create-event", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.HOST), multer_config_1.MulterUpload.single("file"), (0, validationRequest_1.validationRequest)(event_validation_1.eventZodSchema), event_controllers_1.eventControllers.createEvent);
 router.patch("/update/:id", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.HOST), multer_config_1.MulterUpload.single("file"), (0, validationRequest_1.validationRequest)(event_validation_1.updateEventZodSchema), event_controllers_1.eventControllers.updateEventInfo);
-router.delete("/delete", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.HOST), event_controllers_1.eventControllers.deleteEventInfo);
+router.delete("/delete/:id", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.HOST), event_controllers_1.eventControllers.deleteEventInfo);
 exports.eventRoutes = router;
