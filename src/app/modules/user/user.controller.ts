@@ -48,7 +48,7 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
   const userId = decodedToken.userId;
   const updatedDoc = req.body;
 
-  const result = await userServices.updateUser(userId, updatedDoc);
+  const result = await userServices.updateUser(userId, updatedDoc, req.file);
 
   sendResponse(res, {
     success: true,

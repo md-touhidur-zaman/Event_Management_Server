@@ -24,3 +24,15 @@ export interface IUser{
     location: string,
     isBlocked: boolean,
 }
+
+export interface IUpdateUser{
+    name?: string,
+    email?: string,
+    password?:string,
+    phone?: string,
+    picture?: string,
+    about?: string,
+    location?: string,
+    current_password?: string,
+    new_password?: string
+}

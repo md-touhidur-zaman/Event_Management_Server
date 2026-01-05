@@ -59,5 +59,7 @@ export const UpdateUserZodSchemaUser = z.object({
     .optional(),
   location: z.string().optional(),
   picture: z.string().optional(),
+  new_password: z.string().optional(),
+  current_password: z.string().optional()
  
 });
