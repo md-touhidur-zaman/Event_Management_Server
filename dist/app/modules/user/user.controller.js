@@ -43,11 +43,7 @@ const updateUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const decodedToken = req.user;
     const userId = decodedToken.userId;
     const updatedDoc = req.body;
-    //   const { password, ...rest } = updatedDoc;
-    //   if (password === "") {
-    //     updatedDoc = rest;
-    //   }
-    const result = await user_services_1.userServices.updateUser(userId, updatedDoc);
+    const result = await user_services_1.userServices.updateUser(userId, updatedDoc, req.file);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,

@@ -75,13 +75,15 @@ const updateUser = async (
 
     const hashedPassword = await bcryptjs.hash(
       updatedDoc.new_password,
-      envVars.BCRYPT_SALT_COUNT
+      Number(envVars.BCRYPT_SALT_COUNT)
     );
     updatedDoc.password = hashedPassword;
   }
 
   if (file) {
-    await deleteImageFromCLoudinary(userInfo?.picture);
+    if(userInfo?.picture){
+        await deleteImageFromCLoudinary(userInfo?.picture)
+    }
     updatedDoc.picture = file.path;
   }
 

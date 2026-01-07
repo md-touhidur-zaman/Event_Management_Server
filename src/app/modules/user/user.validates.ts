@@ -46,10 +46,6 @@ export const UpdateUserZodSchemaUser = z.object({
   email: z.string().email({ error: "Please provide a valid email" }).optional(),
   phone: z
     .string()
-    .regex(/^(?:\+?88)?01[3-9]\d{8}$/, {
-      message:
-        "Phone number must be Bangladeshi format..., for example:- +8801700000000",
-    })
     .optional(),
   about: z
     .string()
