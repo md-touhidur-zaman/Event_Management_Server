@@ -34,7 +34,7 @@ const getEventById = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllEvent = catchAsync(async (req: Request, res: Response) => {
-  const result = await eventServices.getAllEvent();
+  const result = await eventServices.getAllEvent(req.query as Record<string, string>);
   sendResponse(res, {
     success: true,
     statusCode: httpStatusCode.OK,

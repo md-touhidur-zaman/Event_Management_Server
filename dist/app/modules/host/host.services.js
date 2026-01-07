@@ -26,6 +26,8 @@ const getAllPublishedEvents = async (userId, query) => {
     const searchTerm = query.searchTerm === "undefined" ? "" : query.searchTerm;
     const status = query.status === "undefined" ? "" : query.status;
     const sortBy = query.sortBy === "undefined" ? "dsc" : query.sortBy;
+    const itemPerPage = 3;
+    const page = Number(query.page);
     const host = await host_model_1.Host.findOne({ user: userId });
     if (!host) {
         throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "The host doesn't exist");
@@ -40,8 +42,9 @@ const getAllPublishedEvents = async (userId, query) => {
     if (status) {
         filterQuery.event_status = status;
     }
-    const events = await event_model_1.Event.find(filterQuery).sort({ createdAt: sortBy === "asc" ? 1 : -1 });
-    return events;
+    const totalEvents = await event_model_1.Event.find(filterQuery).countDocuments();
+    const events = await event_model_1.Event.find(filterQuery).sort({ createdAt: sortBy === "asc" ? 1 : -1 }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+    return { totalEvents, events };
 };
 exports.hostServices = {
     requestBecomeHost,

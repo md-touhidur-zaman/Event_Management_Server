@@ -54,53 +54,84 @@ const getEventById = async (eventId: string) => {
   return eventInfo;
 };
 
-const getAllEvent = async () => {
-  const getAllEventInfos = await Event.find().populate({
+const getAllEvent = async (query: Record<string, string>) => {
+  const searchTerm = query.searchTerm === "undefined" ? "" : query.searchTerm;
+  const category = query.category === "undefined" ? "" : query.category;
+  const location = query.location === "undefined" ? "" : query.location;
+
+  const itemPerPage = 3
+  const page = Number(query.page)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const filterQuery: any = {};
+
+  if (searchTerm) {
+    filterQuery.title = { $regex: searchTerm, $options: "i" };
+  }
+
+  if (category) {
+    filterQuery.category = category;
+  }
+  if (location) {
+    filterQuery.location = location;
+  }
+
+  const totalEvents = await Event.find(filterQuery).countDocuments()
+
+  const getAllEventInfos = await Event.find(filterQuery).populate({
     path: "host",
-    select: "user approval_Status",
+    select: "approval_Status",
     populate: {
       path: "user",
-      select: "name email phone",
+      select: "name email phone picture",
     },
-  });
+  }).skip((page-1)*itemPerPage).limit(itemPerPage)
 
-  return getAllEventInfos;
+  return { totalEvents, events: getAllEventInfos };
 };
 
+const updateEventInfo = async (
+  eventId: string,
+  payload: Partial<IEvent>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  file: any
+) => {
+  const eventInfo = (await Event.findById(eventId)) as IEvent;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const updateEventInfo = async (eventId: string, payload: Partial<IEvent>, file: any) => {
-  
-  const eventInfo = await Event.findById(eventId) as IEvent
-
-  if(!eventInfo){
-    throw new AppError(httpStatusCode.BAD_REQUEST, "The event info not found")
+  if (!eventInfo) {
+    throw new AppError(httpStatusCode.BAD_REQUEST, "The event info not found");
   }
 
-  if(eventInfo.event_status === "COMPLETED"){
-    throw new AppError(httpStatusCode.BAD_REQUEST, "You can't update this event. Your event is completed")
+  if (eventInfo.event_status === "COMPLETED") {
+    throw new AppError(
+      httpStatusCode.BAD_REQUEST,
+      "You can't update this event. Your event is completed"
+    );
   }
 
-  if(file){
-    await deleteImageFromCLoudinary(eventInfo?.image)
-    payload.image = file.path 
+  if (file) {
+    await deleteImageFromCLoudinary(eventInfo?.image);
+    payload.image = file.path;
   }
 
   const updatedEventInfo = await Event.findByIdAndUpdate(eventId, payload, {
     new: true,
   });
 
-  return updatedEventInfo
+  return updatedEventInfo;
 };
 
-const deleteEventInfo = async (eventId:string) => {
-  const eventInfo = await Event.findById(eventId) as IEvent
+const deleteEventInfo = async (eventId: string) => {
+  const eventInfo = (await Event.findById(eventId)) as IEvent;
 
-  if(!eventInfo){
-    throw new AppError(httpStatusCode.BAD_REQUEST, "The event info doesn't exist")
+  if (!eventInfo) {
+    throw new AppError(
+      httpStatusCode.BAD_REQUEST,
+      "The event info doesn't exist"
+    );
   }
-  await deleteImageFromCLoudinary(eventInfo.image)
-  
+  await deleteImageFromCLoudinary(eventInfo.image);
+
   const deletedEventInfo = await Event.findByIdAndDelete(eventId);
   return deletedEventInfo;
 };
@@ -110,6 +141,5 @@ export const eventServices = {
   getEventById,
   getAllEvent,
   updateEventInfo,
-  deleteEventInfo
-  
+  deleteEventInfo,
 };

@@ -49,10 +49,10 @@ const getEventById = async (eventId) => {
 const getAllEvent = async () => {
     const getAllEventInfos = await event_model_1.Event.find().populate({
         path: "host",
-        select: "user approval_Status",
+        select: "approval_Status",
         populate: {
             path: "user",
-            select: "name email phone",
+            select: "name email phone picture",
         },
     });
     return getAllEventInfos;
