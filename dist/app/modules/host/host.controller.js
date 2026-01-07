@@ -38,7 +38,8 @@ const updateHostRole = (0, catchAsync_1.catchAsync)(async (req, res) => {
 const getAllPublishedEvents = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const decodedToken = req.user;
     const userId = decodedToken.userId;
-    const result = await host_services_1.hostServices.getAllPublishedEvents(userId);
+    const query = req.query;
+    const result = await host_services_1.hostServices.getAllPublishedEvents(userId, query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,

@@ -16,6 +16,6 @@ const eventSchema = new mongoose_1.Schema({
     image: { type: String, required: true },
     joining_fee: { type: Number, required: true },
     event_status: { type: String, default: event_interface_1.IEventStatus.OPEN },
-    total_no_of_booking: { type: Number, default: 0 }
-});
+    total_no_of_booking: { type: Number, default: 0 },
+}, { timestamps: true });
 exports.Event = (0, mongoose_1.model)("Event", eventSchema);
