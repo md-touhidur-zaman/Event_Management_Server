@@ -46,20 +46,38 @@ const getEventById = async (eventId) => {
     });
     return eventInfo;
 };
-const getAllEvent = async () => {
-    const getAllEventInfos = await event_model_1.Event.find().populate({
+const getAllEvent = async (query) => {
+    const searchTerm = query.searchTerm === "undefined" ? "" : query.searchTerm;
+    const category = query.category === "undefined" ? "" : query.category;
+    const location = query.location === "undefined" ? "" : query.location;
+    const itemPerPage = 3;
+    const page = Number(query.page);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filterQuery = {};
+    if (searchTerm) {
+        filterQuery.title = { $regex: searchTerm, $options: "i" };
+    }
+    if (category) {
+        filterQuery.category = category;
+    }
+    if (location) {
+        filterQuery.location = location;
+    }
+    const totalEvents = await event_model_1.Event.find(filterQuery).countDocuments();
+    const getAllEventInfos = await event_model_1.Event.find(filterQuery).populate({
         path: "host",
         select: "approval_Status",
         populate: {
             path: "user",
             select: "name email phone picture",
         },
-    });
-    return getAllEventInfos;
+    }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+    return { totalEvents, events: getAllEventInfos };
 };
+const updateEventInfo = async (eventId, payload, 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const updateEventInfo = async (eventId, payload, file) => {
-    const eventInfo = await event_model_1.Event.findById(eventId);
+file) => {
+    const eventInfo = (await event_model_1.Event.findById(eventId));
     if (!eventInfo) {
         throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "The event info not found");
     }
@@ -76,7 +94,7 @@ const updateEventInfo = async (eventId, payload, file) => {
     return updatedEventInfo;
 };
 const deleteEventInfo = async (eventId) => {
-    const eventInfo = await event_model_1.Event.findById(eventId);
+    const eventInfo = (await event_model_1.Event.findById(eventId));
     if (!eventInfo) {
         throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "The event info doesn't exist");
     }
@@ -89,5 +107,5 @@ exports.eventServices = {
     getEventById,
     getAllEvent,
     updateEventInfo,
-    deleteEventInfo
+    deleteEventInfo,
 };

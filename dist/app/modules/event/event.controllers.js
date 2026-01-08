@@ -33,7 +33,7 @@ const getEventById = (0, catchAsync_1.catchAsync)(async (req, res) => {
     });
 });
 const getAllEvent = (0, catchAsync_1.catchAsync)(async (req, res) => {
-    const result = await event_services_1.eventServices.getAllEvent();
+    const result = await event_services_1.eventServices.getAllEvent(req.query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
