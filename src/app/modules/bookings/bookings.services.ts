@@ -12,6 +12,7 @@ import { ISSLCommerz } from "../sslCommerz/sslCommerz.interfaces";
 import { sslCommerzServices } from "../sslCommerz/sslCommerz.services";
 
 const createBookings = async (payload: Partial<IBooking>) => {
+ 
   const transactionId = getTransactionId();
   const session = await Bookings.startSession();
   session.startTransaction();
@@ -92,13 +93,28 @@ const createBookings = async (payload: Partial<IBooking>) => {
   }
 };
 
-const getMyBookings = async(userId) =>{
+const getMyBookings = async(userId: string, params:Record<string, string>) =>{
+  const itemPerPage = 3
+  const page = Number(params.page)
+  
+
+  const totalBookings = await Bookings.find({user: userId}).countDocuments()
   const result = await Bookings.find({user: userId})
   .populate("user", "name email phone")
-  .populate("event")
-  .populate("payment")
+  .populate({
+    path:"event",
+    populate: {
+      path:"host",
+      select: "user approval_Status",
+      populate:{
+        path: "user",
+        select: "name email phone picture"
+      }
+    }
+  })
+  .populate("payment").sort({ createdAt: -1 }).skip((page-1)*itemPerPage).limit(itemPerPage)
 
-  return result 
+  return {totalBookings,events:result} 
 }
 
 

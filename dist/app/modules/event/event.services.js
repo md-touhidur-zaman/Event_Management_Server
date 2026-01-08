@@ -41,7 +41,7 @@ const getEventById = async (eventId) => {
         select: "user approval_Status",
         populate: {
             path: "user",
-            select: "name email phone",
+            select: "name email phone picture",
         },
     });
     return eventInfo;

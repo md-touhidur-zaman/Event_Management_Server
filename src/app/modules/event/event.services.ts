@@ -50,9 +50,8 @@ const getEventById = async (eventId: string) => {
       select: "name email phone picture",
     },
   });
-
   return eventInfo;
-};
+}; 
 
 const getAllEvent = async (query: Record<string, string>) => {
   const searchTerm = query.searchTerm === "undefined" ? "" : query.searchTerm;
@@ -135,6 +134,7 @@ const deleteEventInfo = async (eventId: string) => {
   const deletedEventInfo = await Event.findByIdAndDelete(eventId);
   return deletedEventInfo;
 };
+
 
 export const eventServices = {
   createEvent,

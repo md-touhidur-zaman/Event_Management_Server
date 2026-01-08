@@ -10,11 +10,13 @@ const createBookings = catchAsync(async(req:Request, res:Response)=>{
     const decodedToken = req.user as JwtPayload
     const userId = decodedToken.userId
 
+
+
     const bookingsPayload = {
         ...req.body,
         user: userId
     }
-
+    
     const result = await BookingServices.createBookings(bookingsPayload)
 
     sendResponse(res, {
@@ -31,7 +33,7 @@ const getMyBookings = catchAsync(async(req:Request, res:Response)=>{
 
     const userId = decodedToken.userId
 
-    const result = await BookingServices.getMyBookings(userId)
+    const result = await BookingServices.getMyBookings(userId, req.query as Record<string, string>)
 
     sendResponse(res, {
         success: true,
