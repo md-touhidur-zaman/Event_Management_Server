@@ -34,9 +34,16 @@ const createUser = async (payload) => {
     const { password: pass, ...rest } = createUserInfo.toObject();
     return rest;
 };
-const getAllUser = async () => {
-    const allUsersInfo = await user_model_1.User.find();
-    return allUsersInfo;
+const getAllUser = async (query) => {
+    const page = Number(query?.page);
+    const totalUser = await user_model_1.User.find().countDocuments();
+    const allUsersInfo = await user_model_1.User.find().skip((page - 1) * 5).limit(5);
+    const usersWithoutPassword = allUsersInfo.map((user) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { password, ...rest } = user.toObject();
+        return rest;
+    });
+    return { totalUser, user: usersWithoutPassword };
 };
 const getUserById = async (id) => {
     const userInfo = await user_model_1.User.findById(id);
@@ -72,9 +79,16 @@ file) => {
     const { password, ...rest } = updatedUserInfo.toObject();
     return rest;
 };
+const blockUnBlockUser = async (payload) => {
+    const result = await user_model_1.User.findByIdAndUpdate(payload.user, { isBlocked: payload.isBlocked }, { new: true });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = result.toObject();
+    return rest;
+};
 exports.userServices = {
     createUser,
     getAllUser,
     getUserById,
     updateUser,
+    blockUnBlockUser
 };

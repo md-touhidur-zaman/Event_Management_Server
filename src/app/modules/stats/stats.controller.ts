@@ -29,9 +29,21 @@ const getHostStats = catchAsync(async(req:Request, res:Response)=>{
         data: result
     })
 })
+const getAdminStats = catchAsync(async(req:Request, res:Response)=>{
+   
+
+    const result = await StatsServices.getAdminStats()
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatusCode.OK,
+        message: "Admin Stats get successfully",
+        data: result
+    })
+})
 
 
 export const StatsControllers ={
     getUserStats,
-    getHostStats
+    getHostStats,
+    getAdminStats
 }

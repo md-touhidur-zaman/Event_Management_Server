@@ -20,7 +20,8 @@ const createUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
     });
 });
 const getAllUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
-    const result = await user_services_1.userServices.getAllUser();
+    const query = req.query;
+    const result = await user_services_1.userServices.getAllUser(query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
@@ -51,9 +52,19 @@ const updateUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
         data: result,
     });
 });
+const blockUnBlockUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const result = await user_services_1.userServices.blockUnBlockUser(req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "The block info successfully updated",
+        data: result
+    });
+});
 exports.userControllers = {
     createUser,
     getAllUser,
     getUserById,
     updateUser,
+    blockUnBlockUser
 };

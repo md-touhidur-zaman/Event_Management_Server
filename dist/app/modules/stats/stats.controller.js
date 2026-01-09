@@ -30,7 +30,17 @@ const getHostStats = (0, catchAsync_1.catchAsync)(async (req, res) => {
         data: result
     });
 });
+const getAdminStats = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const result = await stats_services_1.StatsServices.getAdminStats();
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Admin Stats get successfully",
+        data: result
+    });
+});
 exports.StatsControllers = {
     getUserStats,
-    getHostStats
+    getHostStats,
+    getAdminStats
 };

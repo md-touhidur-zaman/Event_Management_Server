@@ -5,6 +5,7 @@ const mongoose_1 = require("mongoose");
 const bookings_model_1 = require("../bookings/bookings.model");
 const host_model_1 = require("../host/host.model");
 const event_model_1 = require("../event/event.model");
+const user_model_1 = require("../user/user.model");
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 const getUserStats = async (userId) => {
@@ -152,7 +153,34 @@ const getHostStats = async (userId) => {
         upcomingEventCount: upcomingEventCount[0]?.totalUpcomingEvents || 0,
     };
 };
+const getAdminStats = async () => {
+    const totalEvents = await event_model_1.Event.find().countDocuments();
+    const totalUser = await user_model_1.User.find().countDocuments();
+    const totalHost = await host_model_1.Host.find().countDocuments();
+    const totalRevenue = await event_model_1.Event.aggregate([
+        {
+            $project: {
+                eventRevenue: {
+                    $multiply: ["$joining_fee", "$total_no_of_booking"],
+                },
+            },
+        },
+        {
+            $group: {
+                _id: null,
+                totalRevenue: { $sum: "$eventRevenue" },
+            },
+        },
+    ]);
+    return {
+        totalEvents,
+        totalUser,
+        totalHost,
+        totalRevenue: totalRevenue[0]?.totalRevenue || 0
+    };
+};
 exports.StatsServices = {
     getUserStats,
     getHostStats,
+    getAdminStats
 };

@@ -8,4 +8,5 @@ const stats_controller_1 = require("./stats.controller");
 const router = (0, express_1.Router)();
 router.get("/user-stats", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.USER), stats_controller_1.StatsControllers.getUserStats);
 router.get("/host-stats", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.HOST), stats_controller_1.StatsControllers.getHostStats);
+router.get("/admin-stats", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.ADMIN), stats_controller_1.StatsControllers.getAdminStats);
 exports.statsRoutes = router;

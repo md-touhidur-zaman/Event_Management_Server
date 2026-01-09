@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { Bookings } from "../bookings/bookings.model";
 import { Host } from "../host/host.model";
 import { Event } from "../event/event.model";
+import { User } from "../user/user.model";
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -167,7 +168,37 @@ const getHostStats = async (userId: string) => {
   };
 };
 
+const getAdminStats = async() =>{
+  const totalEvents = await Event.find().countDocuments()
+  const totalUser = await User.find().countDocuments()
+  const totalHost = await Host.find().countDocuments()
+  const totalRevenue = await Event.aggregate([
+    {
+      $project: {
+        eventRevenue: {
+          $multiply: ["$joining_fee", "$total_no_of_booking"],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: "$eventRevenue" },
+      },
+    },
+  ]);
+
+  return{
+    totalEvents,
+    totalUser,
+    totalHost,
+    totalRevenue: totalRevenue[0]?.totalRevenue || 0
+  }
+
+}
+
 export const StatsServices = {
   getUserStats,
   getHostStats,
+  getAdminStats
 };
