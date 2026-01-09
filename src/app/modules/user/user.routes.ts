@@ -23,12 +23,13 @@ router.post(
   validationRequest(createZodSchemaUser),
   userControllers.createUser
 );
+router.post("/blocked-unblocked", checkAuth(IRole.ADMIN), userControllers.blockUnBlockUser)
 router.patch(
   "/update-user",
   checkAuth(IRole.ADMIN, IRole.HOST, IRole.USER),
   MulterUpload.single("file"),
   validationRequest(UpdateUserZodSchemaUser),
   userControllers.updateUser
-);
+);  
 
 export const userRoutes = router;

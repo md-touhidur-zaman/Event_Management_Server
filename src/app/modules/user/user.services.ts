@@ -36,9 +36,19 @@ const createUser = async (payload: Partial<IUser>) => {
   return rest;
 };
 
-const getAllUser = async () => {
-  const allUsersInfo = await User.find();
-  return allUsersInfo;
+const getAllUser = async (query: Record<string,string>) => {
+  const page = Number(query?.page)
+  const totalUser = await User.find().countDocuments();
+
+  const allUsersInfo = await User.find().skip((page-1)*5).limit(5)
+
+  const usersWithoutPassword = allUsersInfo.map((user) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = user.toObject();
+    return rest;
+  });
+
+  return { totalUser, user: usersWithoutPassword };
 };
 
 const getUserById = async (id: string) => {
@@ -81,8 +91,8 @@ const updateUser = async (
   }
 
   if (file) {
-    if(userInfo?.picture){
-        await deleteImageFromCLoudinary(userInfo?.picture)
+    if (userInfo?.picture) {
+      await deleteImageFromCLoudinary(userInfo?.picture);
     }
     updatedDoc.picture = file.path;
   }
@@ -97,9 +107,21 @@ const updateUser = async (
   return rest;
 };
 
+const blockUnBlockUser = async(payload: {user: string, isBlocked: boolean}) =>{
+
+  const result = await User.findByIdAndUpdate(payload.user, {isBlocked: payload.isBlocked}, {new: true})
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {password, ...rest} = result.toObject()
+
+  return rest
+
+}
+
 export const userServices = {
   createUser,
   getAllUser,
   getUserById,
   updateUser,
+  blockUnBlockUser
 };

@@ -21,7 +21,8 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
-  const result = await userServices.getAllUser();
+  const query = req.query
+  const result = await userServices.getAllUser(query as Record<string, string>)
 
   sendResponse(res, {
     success: true,
@@ -54,13 +55,25 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: httpStatusCode.OK,
     message: "You successfully updated your profile",
-    data: result,
+    data: result, 
   });
 });
+
+const blockUnBlockUser = catchAsync(async(req:Request, res:Response)=>{
+  
+  const result = await userServices.blockUnBlockUser(req.body)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatusCode.OK,
+    message: "The block info successfully updated",
+    data: result
+  })
+})
 
 export const userControllers = {
   createUser,
   getAllUser,
   getUserById,
   updateUser,
+  blockUnBlockUser
 };
