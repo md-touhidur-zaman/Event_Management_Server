@@ -5,6 +5,7 @@ import { hostRoutes } from "../modules/host/host.routes";
 import { eventRoutes } from "../modules/event/enevt.routes";
 import { bookingRoutes } from "../modules/bookings/bookings.routes";
 import { paymentRoutes } from "../modules/payment/payment.routes";
+import { statsRoutes } from "../modules/stats/stats.routes";
 
 
 export const router = Router()
@@ -33,6 +34,10 @@ const moduleRoutes = [
     {
         path: "/payment",
         route: paymentRoutes
+    },
+    {
+        path: "/stats",
+        route: statsRoutes
     }
 ]
 

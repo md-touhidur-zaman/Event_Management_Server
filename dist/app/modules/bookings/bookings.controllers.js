@@ -26,7 +26,7 @@ const createBookings = (0, catchAsync_1.catchAsync)(async (req, res) => {
 const getMyBookings = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const decodedToken = req.user;
     const userId = decodedToken.userId;
-    const result = await bookings_services_1.BookingServices.getMyBookings(userId);
+    const result = await bookings_services_1.BookingServices.getMyBookings(userId, req.query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,

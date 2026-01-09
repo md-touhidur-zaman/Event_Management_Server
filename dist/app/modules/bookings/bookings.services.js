@@ -69,12 +69,25 @@ const createBookings = async (payload) => {
         throw error;
     }
 };
-const getMyBookings = async (userId) => {
+const getMyBookings = async (userId, params) => {
+    const itemPerPage = 3;
+    const page = Number(params.page);
+    const totalBookings = await bookings_model_1.Bookings.find({ user: userId }).countDocuments();
     const result = await bookings_model_1.Bookings.find({ user: userId })
         .populate("user", "name email phone")
-        .populate("event")
-        .populate("payment");
-    return result;
+        .populate({
+        path: "event",
+        populate: {
+            path: "host",
+            select: "user approval_Status",
+            populate: {
+                path: "user",
+                select: "name email phone picture"
+            }
+        }
+    })
+        .populate("payment").sort({ createdAt: -1 }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+    return { totalBookings, events: result };
 };
 exports.BookingServices = {
     createBookings,
