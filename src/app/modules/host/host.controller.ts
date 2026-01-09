@@ -57,8 +57,21 @@ const getAllPublishedEvents = catchAsync(async(req:Request, res:Response)=>{
     }) 
 })
 
+const getRequestedBecomeAHost = catchAsync(async(req:Request, res:Response)=>{
+    
+    const result = await hostServices.getRequestedBecomeAHost()
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatusCode.OK,
+        message: "Requested become a hosts info retrieve successfully",
+        data: result 
+    }) 
+})
+
 export  const HostControllers = {
     requestBecomeHost,
     updateHostRole,
-    getAllPublishedEvents
+    getAllPublishedEvents,
+    getRequestedBecomeAHost
 }

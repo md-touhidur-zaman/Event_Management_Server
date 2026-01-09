@@ -7,6 +7,18 @@ import { Host } from "./host.model";
 import { Event } from '../event/event.model';
 
 const requestBecomeHost = async (payload: Partial<IHost>) => {
+  const isHost = await Host.findOne({user: payload.user})
+
+  if(isHost && isHost.approval_Status === IApproval_Status.ACCEPTED){
+    throw new AppError(httpStatusCode.BAD_REQUEST, "Your role already a host")
+  }
+  if(isHost && isHost.approval_Status === IApproval_Status.PENDING){
+    throw new AppError(httpStatusCode.BAD_REQUEST, "Your request is pending, Please wait a while")
+  }
+  if(isHost && isHost.approval_Status === IApproval_Status.REJECTED){
+    throw new AppError(httpStatusCode.BAD_REQUEST, "Your request is rejected")
+  }
+
   const hostInfo = await Host.create(payload);
   return hostInfo;
 };
@@ -60,8 +72,15 @@ const getAllPublishedEvents = async (userId: string, query: Record<string, strin
   return {totalEvents,events}
 };
 
+const getRequestedBecomeAHost = async() =>{
+  const requestedHosts = await Host.find({approval_Status: IApproval_Status.PENDING}).populate("user", "name email phone isBlocked")
+
+  return requestedHosts
+}
+
 export const hostServices = {
   requestBecomeHost,
   updateHostRole,
   getAllPublishedEvents,
+  getRequestedBecomeAHost
 };
