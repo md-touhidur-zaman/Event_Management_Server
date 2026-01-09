@@ -47,8 +47,18 @@ const getAllPublishedEvents = (0, catchAsync_1.catchAsync)(async (req, res) => {
         data: result
     });
 });
+const getRequestedBecomeAHost = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const result = await host_services_1.hostServices.getRequestedBecomeAHost();
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Requested become a hosts info retrieve successfully",
+        data: result
+    });
+});
 exports.HostControllers = {
     requestBecomeHost,
     updateHostRole,
-    getAllPublishedEvents
+    getAllPublishedEvents,
+    getRequestedBecomeAHost
 };

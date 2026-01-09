@@ -71,7 +71,7 @@ const getAllEvent = async (query) => {
             path: "user",
             select: "name email phone picture",
         },
-    }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+    }).skip((page - 1) * itemPerPage).limit(itemPerPage).sort({ createdAt: -1 });
     return { totalEvents, events: getAllEventInfos };
 };
 const updateEventInfo = async (eventId, payload, 
