@@ -17,8 +17,21 @@ const getUserStats = catchAsync(async(req:Request, res:Response)=>{
         data: result
     })
 })
+const getHostStats = catchAsync(async(req:Request, res:Response)=>{
+    const decodedToken = req.user as JwtPayload
+    const userId = decodedToken.userId 
+
+    const result = await StatsServices.getHostStats(userId)
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatusCode.OK,
+        message: "Host Stats get successfully",
+        data: result
+    })
+})
 
 
 export const StatsControllers ={
-    getUserStats
+    getUserStats,
+    getHostStats
 }

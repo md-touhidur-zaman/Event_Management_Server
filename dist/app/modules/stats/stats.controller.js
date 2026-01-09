@@ -19,6 +19,18 @@ const getUserStats = (0, catchAsync_1.catchAsync)(async (req, res) => {
         data: result
     });
 });
+const getHostStats = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const decodedToken = req.user;
+    const userId = decodedToken.userId;
+    const result = await stats_services_1.StatsServices.getHostStats(userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Host Stats get successfully",
+        data: result
+    });
+});
 exports.StatsControllers = {
-    getUserStats
+    getUserStats,
+    getHostStats
 };
