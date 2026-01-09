@@ -14,7 +14,7 @@ const getUserStats = async (userId: string) => {
   const upcomingEventCount = await Bookings.aggregate([
     {
       $match: {
-        user: userId,
+        user: new Types.ObjectId(userId),
       },
     },
 

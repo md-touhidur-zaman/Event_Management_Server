@@ -115,9 +115,18 @@ const getMyBookings = async(userId: string, params:Record<string, string>) =>{
   return {totalBookings,events:result} 
 }
 
+const getBookingsByEventId = async(eventId: string) =>{
+  const bookingEventInfo = await Bookings.find({event: eventId}).populate("user", "name email phone").populate("payment", "amount payment_status transactionId")
+
+  return bookingEventInfo
+}
+
+
+
 
 
 export const BookingServices = {
     createBookings,
-    getMyBookings
+    getMyBookings,
+    getBookingsByEventId
 }

@@ -43,8 +43,21 @@ const getMyBookings = catchAsync(async(req:Request, res:Response)=>{
     })
 })
 
+const getBookingsByEventId = catchAsync(async(req:Request, res:Response)=>{
+    const eventId = req.params.eventId
+    const result = await BookingServices.getBookingsByEventId(eventId)
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatusCode.OK,
+        message: "All Participants retrieve successfully",
+        data: result
+    })
+})
+
 
 export const bookingsControllers = {
     createBookings,
-    getMyBookings
+    getMyBookings,
+    getBookingsByEventId
 }

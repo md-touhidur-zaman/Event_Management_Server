@@ -6,6 +6,7 @@ const bookings_controllers_1 = require("./bookings.controllers");
 const checkAuth_1 = require("../../middleware/checkAuth");
 const user_interface_1 = require("../user/user.interface");
 const router = (0, express_1.Router)();
+router.get("/participants/:eventId", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.HOST), bookings_controllers_1.bookingsControllers.getBookingsByEventId);
 router.get("/my-bookings", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.USER), bookings_controllers_1.bookingsControllers.getMyBookings);
 router.post("/create-booking", (0, checkAuth_1.checkAuth)(user_interface_1.IRole.USER), bookings_controllers_1.bookingsControllers.createBookings);
 exports.bookingRoutes = router;

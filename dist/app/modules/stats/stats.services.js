@@ -14,7 +14,7 @@ const getUserStats = async (userId) => {
     const upcomingEventCount = await bookings_model_1.Bookings.aggregate([
         {
             $match: {
-                user: userId,
+                user: new mongoose_1.Types.ObjectId(userId),
             },
         },
         {

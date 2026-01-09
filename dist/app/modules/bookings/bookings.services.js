@@ -89,7 +89,12 @@ const getMyBookings = async (userId, params) => {
         .populate("payment").sort({ createdAt: -1 }).skip((page - 1) * itemPerPage).limit(itemPerPage);
     return { totalBookings, events: result };
 };
+const getBookingsByEventId = async (eventId) => {
+    const bookingEventInfo = await bookings_model_1.Bookings.find({ event: eventId }).populate("user", "name email phone").populate("payment", "amount payment_status transactionId");
+    return bookingEventInfo;
+};
 exports.BookingServices = {
     createBookings,
-    getMyBookings
+    getMyBookings,
+    getBookingsByEventId
 };

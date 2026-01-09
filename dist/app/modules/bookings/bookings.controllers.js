@@ -34,7 +34,18 @@ const getMyBookings = (0, catchAsync_1.catchAsync)(async (req, res) => {
         data: result
     });
 });
+const getBookingsByEventId = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const eventId = req.params.eventId;
+    const result = await bookings_services_1.BookingServices.getBookingsByEventId(eventId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "All Participants retrieve successfully",
+        data: result
+    });
+});
 exports.bookingsControllers = {
     createBookings,
-    getMyBookings
+    getMyBookings,
+    getBookingsByEventId
 };
