@@ -40,7 +40,7 @@ const getAllPublishedEvents = async (userId: string, query: Record<string, strin
   const status = query.status === "undefined"?"": query.status
   const sortBy = query.sortBy === "undefined"?"dsc": query.sortBy
 
-  const itemPerPage = 3
+  const itemPerPage = 4
   const page = Number(query.page)
 
   

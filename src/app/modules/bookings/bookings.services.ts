@@ -94,7 +94,7 @@ const createBookings = async (payload: Partial<IBooking>) => {
 };
 
 const getMyBookings = async(userId: string, params:Record<string, string>) =>{
-  const itemPerPage = 3
+  const itemPerPage = 4
   const page = Number(params.page)
   const totalBookings = await Bookings.find({user: userId}).countDocuments()
   const result = await Bookings.find({user: userId})

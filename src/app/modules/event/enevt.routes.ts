@@ -12,7 +12,6 @@ router.get("/", eventControllers.getAllEvent);
 
 router.get(
   "/:id",
-  checkAuth(IRole.USER, IRole.HOST, IRole.ADMIN),
   eventControllers.getEventById
 );
 
