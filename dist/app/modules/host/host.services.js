@@ -36,7 +36,7 @@ const getAllPublishedEvents = async (userId, query) => {
     const searchTerm = query.searchTerm === "undefined" ? "" : query.searchTerm;
     const status = query.status === "undefined" ? "" : query.status;
     const sortBy = query.sortBy === "undefined" ? "dsc" : query.sortBy;
-    const itemPerPage = 3;
+    const itemPerPage = 4;
     const page = Number(query.page);
     const host = await host_model_1.Host.findOne({ user: userId });
     if (!host) {

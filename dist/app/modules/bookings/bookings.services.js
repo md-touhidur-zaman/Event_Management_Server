@@ -70,7 +70,7 @@ const createBookings = async (payload) => {
     }
 };
 const getMyBookings = async (userId, params) => {
-    const itemPerPage = 3;
+    const itemPerPage = 4;
     const page = Number(params.page);
     const totalBookings = await bookings_model_1.Bookings.find({ user: userId }).countDocuments();
     const result = await bookings_model_1.Bookings.find({ user: userId })

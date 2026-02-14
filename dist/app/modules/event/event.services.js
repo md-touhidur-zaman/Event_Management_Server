@@ -50,7 +50,7 @@ const getAllEvent = async (query) => {
     const searchTerm = query.searchTerm === "undefined" ? "" : query.searchTerm;
     const category = query.category === "undefined" ? "" : query.category;
     const location = query.location === "undefined" ? "" : query.location;
-    const itemPerPage = 3;
+    const itemPerPage = Number(query.size) || 4;
     const page = Number(query.page);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filterQuery = {};

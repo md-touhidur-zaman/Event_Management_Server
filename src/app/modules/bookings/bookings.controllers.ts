@@ -19,6 +19,8 @@ const createBookings = catchAsync(async(req:Request, res:Response)=>{
     
     const result = await BookingServices.createBookings(bookingsPayload)
 
+  
+
     sendResponse(res, {
         success: true,
         statusCode: httpStatusCode.OK,
